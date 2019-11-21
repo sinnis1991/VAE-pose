@@ -1,6 +1,8 @@
 
 # this function will turn a point in 3D into its position in 2D, ox oy F_x F_y are the intrinsicMatrix parameters
 
+from math import pi,cos,sin
+
 def estimate_3D_to_2D(ox,oy,FocalLength_x,FocalLength_y,a,b,g,x_trans,z_trans,r,points):
 
   r_x = [[1,0,0],[0,cos(a),-sin(a)],[0,sin(a),cos(a)]]
@@ -100,21 +102,6 @@ class gl_ob(object):
               (Tri['p2'][0], Tri['p2'][1], Tri['p2'][2]))
 
       glEnd()
-    
-  def chess_board(self):
-
-      glBegin(GL_POINTS)
-
-      for m in range(-10,10):
-          for n in range(-7,7):
-              x = 35*m/1000.
-              z = 35*n/1000.
-
-              glColor3fv(( 1, 1, 1))
-
-              glVertex3fv((x,0,z))
-
-      glEnd()
       
   def draw_sence( self, alpha = 0, beta = 0, gama = 0, x_trans = 0, z_trans = 0, radius = 0.3, draw_cube = True, draw_chess = False, draw_window = False):
 
@@ -148,42 +135,10 @@ class gl_ob(object):
       if draw_cube:
           self.cube()
           
-      if draw_chess:
-          self.chess_board()
-          
-      if draw_window:
-          glMatrixMode (GL_PROJECTION)
-          glLoadIdentity()
-          glOrtho(-320*2, 320*2, -240*2, 240*2, 0.0, 30.0)
-
-          glMatrixMode(GL_MODELVIEW)
-          glLoadIdentity()
-
-          side = 800
-
-          glColor3fv((1, 0, 0))
-          glBegin(GL_LINES)
-
-
-          glVertex2i(-side/2,-side/2)
-          glVertex2i(-side/2,side/2)
-
-          glVertex2i(-side/2,side/2)
-          glVertex2i(side/2,side/2)
-
-          glVertex2i(side/2,side/2)
-          glVertex2i(side/2,-side/2)
-
-          glVertex2i(side/2,-side/2)
-          glVertex2i(-side/2,-side/2)
-
-          glEnd()
-
   def initiate(self):
 
       self.display = (self.display_width, self.display_height)
       
-
   def static_sence(self, a=0, b=0, g=0, x=0, z=0, r=0.3):
       
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
