@@ -1,5 +1,7 @@
 
 # this function will turn a point in 3D into its position in 2D, ox oy F_x F_y are the intrinsicMatrix parameters
+from OpenGL.GL import *
+from OpenGL.GLU import *
 
 from math import pi,cos,sin
 from read_stl import *
