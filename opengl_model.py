@@ -2,6 +2,7 @@
 # this function will turn a point in 3D into its position in 2D, ox oy F_x F_y are the intrinsicMatrix parameters
 
 from math import pi,cos,sin
+from read_stl import *
 
 def estimate_3D_to_2D(ox,oy,FocalLength_x,FocalLength_y,a,b,g,x_trans,z_trans,r,points):
 
