@@ -294,3 +294,58 @@ class gl_ob(object):
       result[i] = small
 
     return result
+
+  def read_pose_set(self, pose_set_path):
+    self.pose = np.load(pose_set_path)
+    self.pose_len = np.size(self.pose,0)
+    self.pose_len = np.size(self.pose,0) 
+    print 'pose_len:{}'.format(self.pose_len)
+    a = self.pose_len%batch_size
+    if a !=0:
+      self.pose = np.concatenate((self.pose,self.pose[:self.batch_size-a,:]))
+      self.pose_len = np.size(self.pose,0)
+      print('pose_len_resized:{}'.format(self.pose_len))
+    
+    self.pose_batch_len = self.pose_len//64
+    print('pose_batch_len:{}'.format(self.pose_batch_len))
+
+  def dynamic_sence_poseset(self, pose_batch_index):
+
+    tmp_arr_set = np.zeros((self.batch_size,self.display_height,self.display_width,3))
+
+    for i in range(self.batch_size):
+      p = self.pose[pose_batch_index*self.batch_size+i]
+      tmp_arr = self.static_sence(p[0],p[1],p[2],p[3],p[4],p[5])
+      tmp_arr_set[i] = tmp_arr 
+
+    return tmp_arr_set
+
+  def out_put_fast_poseset(self,window_side=480,if_write = False,pose_batch_index=0):
+
+    tmp_arr_set = self.dynamic_sence_poseset(pose_batch_index)
+    result = np.zeros((self.batch_size,128,128))
+
+    for i in range(self.batch_size):
+      tmp_arr = tmp_arr_set[i]
+      if if_write:
+        cv2.imwrite('outfile_{}.png'.format(i), tmp_arr)
+        
+      window_arr = tmp_arr[0:480, 160:640,  :]
+
+      im_clip = cv2.resize(window_arr,(128*2,128*2))
+      im_clip = im_clip.astype(np.uint8)
+      canny_im = cv2.Canny(im_clip, 100, 200)
+      kernel = np.ones((2, 2), np.uint8)
+      dilation = cv2.dilate(canny_im, kernel, iterations=1)
+      small = cv2.resize(dilation, (128,128))
+      small = small.astype(np.uint8)
+
+      small = np.array([small[-j] for j in range(len(small))])
+
+      small = cv2.threshold(small,0,255,cv2.THRESH_BINARY)[1]
+      
+      if if_write:
+        cv2.imwrite('outfile_clip_contour{}.png'.format(i), small)
+      result[i] = small
+
+    return result
