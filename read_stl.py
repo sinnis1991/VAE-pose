@@ -4,7 +4,9 @@ import numpy as np
 class stl_model(object):
 
     def __init__(self,file_path = './binary.stl'):
-
+        # self.width = width
+        # self.height = height
+        # self.batch_size = batch_size
         self.path = file_path
         self.model = self.read_file(file_path)
         self.tri = self.creat_triangles()
@@ -13,7 +15,8 @@ class stl_model(object):
     
         normal = []
         vertex = []
-              
+        
+        
         with open(path,'r') as f:
             
             while True:
@@ -52,11 +55,39 @@ class stl_model(object):
         color = [ colorsys.hsv_to_rgb(np.random.uniform(),1.,1.) for i in range(nor_num)]
         colors = [(a[0]*255,a[1]*255,a[2]*255) for a in color]
         
-        special_colors = [ colorsys.hsv_to_rgb(i/25.,1.,1.) for i in range(25)]
+        special_colors = [ (0.1, 0.1, 0.1) for i in range(25)]
         special_colors[0] =(0.1,0.1,0.1)
         special_colors[24] = (1., 1., 1.)
         
         triangles = []
+
+
+        special_colors[1] = [colorsys.hsv_to_rgb(30/360.,89/100.,94/100.)]
+        special_colors[10] = [colorsys.hsv_to_rgb(198/360.,100/100.,91/100.)]
+
+        special_colors[5] = [colorsys.hsv_to_rgb(198/360.,100/100.,91/100.)]
+        
+        
+        special_colors[15] = [colorsys.hsv_to_rgb(30/360.,100/100.,94/100.)]
+        special_colors[20] = [colorsys.hsv_to_rgb(30/360.,100/100.,94/100.)]
+        special_colors[22] = [colorsys.hsv_to_rgb(30/360.,89/100.,70/100.)]
+        special_colors[9] = [colorsys.hsv_to_rgb(30/360.,89/100.,70/100.)]
+        special_colors[13] = [colorsys.hsv_to_rgb(30/360.,89/100.,70/100.)]
+        special_colors[17] = [colorsys.hsv_to_rgb(30/360.,89/100.,70/100.)]
+        
+        # for i in range(tri_num):
+        #     nor = normal[i]
+        #     p0 = vertex[i*3]
+        #     p1 = vertex[i*3+1]
+        #     p2 = vertex[i*3+2]
+        #     c = (255,255,255)
+        #     for k in range(nor_num):
+        #         Nor = nor_list[k]
+        #         if Nor[0] == nor[0] and Nor[1] == nor[1] and Nor[2] == nor[2]:
+        #             c = colors[k]
+        #             break
+        #     triangles.append(None)
+        #     triangles[len(triangles)-1] = {"normal":nor,"p0":p0,"p1":p1,"p2":p2,"colors":c}
         
         for i in range(tri_num):
             nor = normal[i]
@@ -90,27 +121,27 @@ class stl_model(object):
             elif i >= 500 and i < 620:
                 c = special_colors[5]
             elif i ==620 or i == 621:
-                c = special_colors[10]
+                c = special_colors[13]
             elif i ==622 or i == 623:
-                c = special_colors[10]
+                c = special_colors[13]
             elif i ==624 or i == 625:
                 c = special_colors[22]
             elif i ==626 or i == 627:
                 c = special_colors[22]
             elif i ==628 or i == 629:
-                c = special_colors[5]
+                c = special_colors[9]
             elif i ==630 or i == 631:
-                c = special_colors[5]
+                c = special_colors[9]
             elif i ==632 or i == 633:
-                c = special_colors[5]
+                c = special_colors[9]
             elif i ==634 or i == 635:
-                c = special_colors[5]
+                c = special_colors[9]
             elif i >= 672 and i <832:
                 c = special_colors[15]
             elif i >= 832 and i <1048:
-                c = special_colors[1]
+                c = special_colors[17]
             elif i >= 1048 and i <1184:
-                c = special_colors[1]
+                c = special_colors[17] 
             elif i >= 1184:
                 c = special_colors[10]
             else:
@@ -120,3 +151,11 @@ class stl_model(object):
             triangles[len(triangles)-1] = {"normal":nor,"p0":p0,"p1":p1,"p2":p2,"colors":c}
             
         return triangles
+        
+        
+        
+
+
+
+
+
